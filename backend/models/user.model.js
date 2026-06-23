@@ -17,18 +17,36 @@ const userSchema = new mongoose.Schema({
     },
         email:{
             type: String,
+            unique: true,
             required: true,
             minlength:[5, 'Email must be at least 3 characters long'],
         },
+            phone: {
+                type: String,
+                required: true,
+                unique: true,
+                minlength:[10, 'Phone number must be at least 10 characters long'],
+            },
         password: {
             type: String,
             required: true,
             select: false,
         },
+        role: {
+            type: String,
+            enum: ['customer', 'supplier','delivery', 'admin'],
+            default: 'customer',
+        },
+        location: {
+            latitude: { type: Number, required: true },
+            longitude: { type: Number, required: true },
+        },
         socketId: {
             type: String,
-        },
-})
+        }
+},{
+    timestamps: true,
+});
 
 
 userSchema.methods.generateAuthToken = function() {
@@ -44,7 +62,4 @@ userSchema.statics.hashPassword = async function (password) {
     return await bcrypt.hash(password, 10);
 }
 
-const userModel = mongoose.model('user', userSchema);
-
-
-module.exports = userModel;
+module.exports = mongoose.model('User', userSchema);

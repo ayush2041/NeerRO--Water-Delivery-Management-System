@@ -9,8 +9,19 @@ connectToDb();
 
 app.use(cors());
 
+app.use(express.json());
+
+const userRoutes = require('./routes/register.routes');
+app.use('/users', userRoutes);
+
+const supplierRoutes = require('./routes/supplier.routes');
+app.use('/suppliers', supplierRoutes);
+
+const orderRoutes = require('./routes/order.routes');
+app.use('/orders', orderRoutes);
+
 app.get('/', (req, res) => {
-    res.send("Hello world");
+    res.send("Neer-Ro");
 });
 
 
